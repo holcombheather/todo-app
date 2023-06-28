@@ -1,9 +1,22 @@
-import React from 'react';
+import { createStyles } from '@mantine/core';
 
-// import './Footer.scss';
+const useStyles = createStyles((theme) => ({
+  footer: {
+    textAlign: 'right',
+    width: '80%',
+    margin: 'auto',
+    padding: '2rem'
+  }
+}));
 
 function Footer() {
-  return <footer>&copy; 2022 Code Fellows</footer>;
+  const { classes } = useStyles();
+
+  return (
+  <footer className={classes.footer}>
+    &copy; 2023 Code Fellows
+    </footer>
+  )
 }
 
 export default Footer;

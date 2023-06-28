@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { SettingsContext } from '../../Context/Settings';
-import { Group, Pagination } from '@mantine/core';
+import { Container, Group, Pagination, Card, Text, Badge, Space, CloseButton } from '@mantine/core';
 
 
 const List = ({ list, toggleComplete }) => {
@@ -15,25 +15,34 @@ const List = ({ list, toggleComplete }) => {
   const totalPage = Math.ceil(filteredList.length / itemsPerScreen);
   return (
     <>
-      <h1>List</h1> 
-      {displayedList.map(item => (
-        <div key={item.id}>
-          <p>{item.text}</p>
-          <p><small>Assigned to: {item.assignee}</small></p>
-          <p><small>Difficulty: {item.difficulty}</small></p>
-          <div onClick={() => toggleComplete(item.id)}>Complete: {item.complete.toString()}</div>
-          <hr />
-        </div>
-      ))}
-     <Pagination.Root total={totalPage} initialPage={currentPage} onPageChange={setCurrentPage}>
-      <Group spacing={5} position="center">
-        <Pagination.First />
-        <Pagination.Previous />
-        <Pagination.Items />
-        <Pagination.Next />
-        <Pagination.Last />
-      </Group>
-    </Pagination.Root>
+      <Container px="sm" spacing={10}>
+        {displayedList.map(item => (
+          <>
+          <Card key={item.id} padding="lg" radius="sm" withBorder shadow="lg" >
+            <Card.Section withBorder px="xs">
+              <Group padding="sm">
+                <Badge color="green" variant="filled" onClick={() => toggleComplete(item.id)}>Pending</Badge>
+                <Text fz="md">{item.assignee}</Text>
+                <CloseButton title="Close popover" size="sm"/>
+              </Group>
+
+            </Card.Section>
+            <Card.Section inheritPadding py="xs">
+              <Text fz="md" mt="xs">{item.text}</Text>
+              <Text align="right"><small>Difficulty: {item.difficulty}</small></Text>
+            </Card.Section>
+          </Card>
+          <Space h="md" />
+          </>
+        ))}
+        <Pagination.Root withEdges value={currentPage} total={totalPage} initialPage={currentPage} onPageChange={setCurrentPage}>
+          <Group spacing={10} position="left">
+            <Pagination.Previous />
+            <Pagination.Items />
+            <Pagination.Next />
+          </Group>
+        </Pagination.Root>
+      </Container>
     </>
   );
 };

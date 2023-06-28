@@ -1,18 +1,31 @@
 import React from 'react';
-// import { Header } from '@mantine/core';
+import { createStyles, Text, Group, Navbar, Button, Flex } from '@mantine/core';
 
-// import './Header.scss';
+const useStyles = createStyles((theme) => ({
+  mainHeader: {
+    backgroundColor: theme.colors.blue[7],
+    height: '100%',
+    padding: theme.spacing.md,
+    color: theme.colors.gray[0],
+    fontSize: theme.fontSizes.md,
+  }
+}))
 
 function Header() {
-  return (
-    <>
-    {/* // <Header> */}
-        <nav>
-          <h1>Home</h1>
-        </nav>
-    {/* // </Header> */}
-    </>
+  const { classes } = useStyles();
 
+  return (
+    <header>
+        <Navbar className={classes.mainHeader}>
+          <Group>
+         <Text>Home</Text>
+          <Text>Settings</Text>
+          <Flex justify="flex-end">
+            <Button align="right" color="red">Log Out</Button>  
+          </Flex>
+          </Group>
+        </Navbar>
+    </header>
   );
 }
 
