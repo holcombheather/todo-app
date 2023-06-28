@@ -1,8 +1,8 @@
 import React from 'react';
-import { createStyles, Navbar, Text, rem } from '@mantine/core';
+import { createStyles, Text, Group, Navbar, Button, Flex } from '@mantine/core';
 
 const useStyles = createStyles((theme) => ({
-  navbar: {
+  mainHeader: {
     backgroundColor: theme.colors.blue[7],
     height: '100%',
     padding: theme.spacing.md,
@@ -16,8 +16,14 @@ function Header() {
 
   return (
     <header>
-        <Navbar className={classes.navbar}>
-          <Text>Home</Text>
+        <Navbar className={classes.mainHeader}>
+          <Group>
+         <Text>Home</Text>
+          <Text>Settings</Text>
+          <Flex justify="flex-end">
+            <Button align="right" color="red">Log Out</Button>  
+          </Flex>
+          </Group>
         </Navbar>
     </header>
   );

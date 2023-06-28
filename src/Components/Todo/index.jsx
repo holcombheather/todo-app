@@ -1,11 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import useForm from '../../hooks/form';
+import { Header, SimpleGrid, createStyles, Navbar, Container, Space, Stack, Paper, Text, Input, Button, Slider, Title } from '@mantine/core';
+
 
 import { v4 as uuid } from 'uuid';
 
 import List from '../List';
 
+const useStyles = createStyles((theme) => ({
+  header: {
+    backgroundColor: theme.colors.dark[4],
+    padding: theme.spacing.md,
+    color: theme.colors.gray[0],
+  }
+}));
+
 const Todo = () => {
+  const { classes } = useStyles();
 
   const [defaultValues] = useState({
     difficulty: 4,
@@ -22,15 +33,15 @@ const Todo = () => {
   }
 
   function deleteItem(id) {
-    const items = list.filter( item => item.id !== id );
+    const items = list.filter(item => item.id !== id);
     setList(items);
   }
 
   function toggleComplete(id) {
 
-    const items = list.map( item => {
-      if ( item.id === id ) {
-        item.complete = ! item.complete;
+    const items = list.map(item => {
+      if (item.id === id) {
+        item.complete = !item.complete;
       }
       return item;
     });
@@ -46,40 +57,54 @@ const Todo = () => {
     // linter will want 'incomplete' added to dependency array unnecessarily. 
     // disable code used to avoid linter warning 
     // eslint-disable-next-line react-hooks/exhaustive-deps 
-  }, [list]);  
+  }, [list]);
 
   return (
     <>
-      <header data-testid="todo-header">
-        <h1 data-testid="todo-h1">To Do List: {incomplete} items pending</h1>
-      </header>
+      <Container>
+        <Space h="md" />
+        <header data-testid="todo-header">
+          <Header className={classes.header}>
+            <Title order={4} data-testid="todo-h1">To Do List: {incomplete} items pending</Title>
+          </Header>
+        </header>
+        <Space h="md" />
+        {/* leave the form code inside of the Todo Component */}
+        <SimpleGrid cols={2} spacing="sm" verticalSpacing="lg">
+          <div>
+            <Paper padding="lg" radius="sm" withBorder p="md">
 
-      {/* leave the form code inside of the Todo Component */}
-      <form onSubmit={handleSubmit}>
+              <form onSubmit={handleSubmit}>
+                <Stack >
+                  <Title order={3}>Add To Do Item</Title>
 
-        <h2>Add To Do Item</h2>
+                  <label>
+                    <Text fz="sm" fw={500}>To Do Item</Text>
+                    <Input size="sm" onChange={handleChange} name="text" type="text" placeholder="Item Details" />
+                  </label>
 
-        <label>
-          <span>To Do Item</span>
-          <input onChange={handleChange} name="text" type="text" placeholder="Item Details" />
-        </label>
+                  <label>
+                    <Text fz="sm" fw={500}>Assigned To</Text>
+                    <Input size="sm" onChange={handleChange} name="assignee" type="text" placeholder="Assignee Name" />
+                  </label>
 
-        <label>
-          <span>Assigned To</span>
-          <input onChange={handleChange} name="assignee" type="text" placeholder="Assignee Name" />
-        </label>
+                  <label>
+                    <Text fz="md">Difficulty</Text>
+                    <Slider onChange={handleChange} defaultValue={defaultValues.difficulty} type="range" min={1} max={5} name="difficulty" />
+                  </label>
 
-        <label>
-          <span>Difficulty</span>
-          <input onChange={handleChange} defaultValue={defaultValues.difficulty} type="range" min={1} max={5} name="difficulty" />
-        </label>
-
-        <label>
-          <button type="submit">Add Item</button>
-        </label>
-      </form>
-
-      <List list={list} toggleComplete={toggleComplete} />
+                  <label>
+                    <Button size="sm" type="submit">Add Item</Button>
+                  </label>
+                </Stack>
+              </form>
+            </Paper>
+          </div>
+          <div>
+            <List list={list} toggleComplete={toggleComplete} />
+          </div>
+        </SimpleGrid>
+      </Container>
     </>
   );
 };
