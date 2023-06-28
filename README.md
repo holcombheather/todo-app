@@ -12,7 +12,7 @@ A Web Application for securely managing a To Do List.
 
 ### Links and Resources
 
-- [GitHub Actions ci/cd]()
+- [GitHub Actions ci/cd](https://github.com/holcombheather/todo-app/actions)
 - [Deployed link on codesandbox.io]()
 
 ### Collaborators
