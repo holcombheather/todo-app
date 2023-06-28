@@ -1,16 +1,18 @@
 import React from 'react';
+// import { Header } from '@mantine/core';
 
 // import './Header.scss';
 
 function Header() {
   return (
-    <header>
-      <nav>
-        {/* <h1><Link to="/">Home</Link></h1> */}
-        <h1>Home</h1>
-        {/* <h1><Link to="/settings">Settings</Link></h1> */}
-      </nav>
-    </header>
+    <>
+    {/* // <Header> */}
+        <nav>
+          <h1>Home</h1>
+        </nav>
+    {/* // </Header> */}
+    </>
+
   );
 }
 
