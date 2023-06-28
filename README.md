@@ -63,4 +63,4 @@ In Phase 1, we're going to perform some refactoring of a Todo application built 
 
 #### UML
 
-![UML for Class 06](UML_class31.png)
+![UML for Class 06](./assets/UML_class31.png)
