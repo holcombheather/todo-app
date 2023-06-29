@@ -15,40 +15,18 @@ const useStyles = createStyles((theme) => ({
   }
 }));
 
-const Todo = () => {
+const SettingsForm = () => {
   const { classes } = useStyles();
-
-  // TODO: update with functionality for 2 other reqs
-  const { itemsPerScreen, setItemsPerScreen, hideCompleted, setHideCompleted, sortBy, setSortBy } = useContext(SettingsContext);
 
   const [defaultValues] = useState({
     difficulty: 4,
   });
-  const [list, setList] = useState([]);
-  const [incomplete, setIncomplete] = useState([]);
   const { handleChange, handleSubmit } = useForm(defaultValues);
 
-  function toggleComplete(id) {
+  const { itemsPerScreen, setItemsPerScreen, hideCompleted, setHideCompleted, sortBy, setSortBy } = useContext(SettingsContext);
 
-    const items = list.map(item => {
-      if (item.id === id) {
-        item.complete = !item.complete;
-      }
-      return item;
-    });
 
-    setList(items);
-
-  }
-
-  useEffect(() => {
-    let incompleteCount = list.filter(item => !item.complete).length;
-    setIncomplete(incompleteCount);
-    document.title = `To Do List: ${incomplete}`;
-    // linter will want 'incomplete' added to dependency array unnecessarily. 
-    // disable code used to avoid linter warning 
-    // eslint-disable-next-line react-hooks/exhaustive-deps 
-  }, [list]);
+  const [checked, setChecked] = useState(false);
 
   return (
     <>
@@ -60,32 +38,36 @@ const Todo = () => {
           </Header>
         </header>
         <Space h="md" />
-        {/* leave the form code inside of the Todo Component */}
         <SimpleGrid cols={2} spacing="lg" verticalSpacing="lg">
           <div>
             <Paper padding="lg" radius="sm" withBorder p="md">
 
-              <form onSubmit={handleSubmit}>
+              <form 
+              onSubmit={handleSubmit}
+               >
                 <Stack spacing="xs">
                   <Title order={4}>Update Settings</Title>
 
                   <Group>
                     <Switch
                     // TODO: update state
-                    checked={hideCompleted}
-                    onChange={checked => setHideCompleted(checked)}
+                    checked={checked} onChange={(event) => setChecked(event.currentTarget.checked)} 
                     />
                     <Text fz="sm" >Show Completed ToDos</Text>
                   </Group>
 
                   <label>
                     <Text fz="sm" fw={500}>Items Per Page</Text>
-                    <NumberInput size="sm" onChange={value => setItemsPerScreen(value)} name="itemsPerScreen" placeholder="20" />
+                    <NumberInput size="sm" 
+                    // onChange={value => setItemsPerScreen(value)} 
+                    name="itemsPerScreen" placeholder="20" />
                   </label>
 
                   <label>
                     <Text fz="sm" fw={500}>Sort Keyword</Text>
-                    <Input size="sm" onChange={handleChange} name="assignee" type="text" placeholder="difficulty"
+                    <Input size="sm" 
+                    // onChange={handleChange} 
+                    name="assignee" type="text" placeholder="difficulty"
                     // TODO: update state
                     // TODO: counter
                     />
@@ -100,22 +82,25 @@ const Todo = () => {
           </div>
           <div>
             <Paper padding="lg" radius="sm" withBorder p="lg">
-
-              <form onSubmit={handleSubmit}>
                 <Stack spacing="xs">
                   <Title order={4}>Updated Settings</Title>
                   <Space h="xs" />
-                  <Text fz="md" >{hideCompleted ? 'Show Completed ToDos' : 'Hide Completed ToDos'}</Text>
+                  <Text fz="md" >
+                    {/* {hideCompleted ? 'Show Completed ToDos' : 'Hide Completed ToDos'} */}
+                    </Text>
 
-                  <Text fz="md" >Items Per Page: {itemsPerScreen}</Text>
+                  <Text fz="md" >Items Per Page: 
+                  {/* {itemsPerScreen} */}
+                  </Text>
 
 
                   <label>
-                    <Text fz="md">Sort Keyword: {sortBy}</Text>
+                    <Text fz="md">Sort Keyword: 
+                    {/* {sortBy} */}
+                    </Text>
                   </label>
 
                 </Stack>
-              </form>
             </Paper>
           </div>
         </SimpleGrid>
@@ -124,4 +109,4 @@ const Todo = () => {
   );
 };
 
-export default Todo;
+export default SettingsForm;

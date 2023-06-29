@@ -3,7 +3,8 @@ import { SettingsContext } from '../../Context/Settings';
 import { Container, Group, Pagination, Card, Text, Badge, Space, CloseButton } from '@mantine/core';
 
 
-const List = ({ list, toggleComplete }) => {
+
+const List = ({ list, toggleComplete, deleteItem }) => {
   const { itemsPerScreen, hideCompleted, sort } = useContext(SettingsContext);
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -16,6 +17,7 @@ const List = ({ list, toggleComplete }) => {
   const endIndex = startIndex + itemsPerScreen;
   const displayedList = filteredList.slice(startIndex, endIndex);
 
+  
 
   return (
     <>
@@ -27,7 +29,7 @@ const List = ({ list, toggleComplete }) => {
               <Group padding="sm">
                 <Badge color="green" variant="filled" onClick={() => toggleComplete(item.id)}>Pending</Badge>
                 <Text fz="md">{item.assignee}</Text>
-                <CloseButton title="Close popover" size="sm"/>
+                <CloseButton onClick={() => deleteItem(item.id)} title="Delete ToDo Item" size="sm"/>
               </Group>
 
             </Card.Section>

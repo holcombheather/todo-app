@@ -101,7 +101,7 @@ const Todo = () => {
             </Paper>
           </div>
           <div>
-            <List list={list} toggleComplete={toggleComplete} />
+            <List list={list} toggleComplete={toggleComplete} deleteItem={deleteItem}/>
           </div>
         </SimpleGrid>
       </Container>
@@ -110,4 +110,3 @@ const Todo = () => {
 };
 
 export default Todo;
-g
