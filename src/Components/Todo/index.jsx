@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import useForm from '../../hooks/form';
-import { Header, SimpleGrid, createStyles, Navbar, Container, Space, Stack, Paper, Text, Input, Button, Slider, Title } from '@mantine/core';
+import { Header, Grid, createStyles, Navbar, Container, Space, Stack, Paper, Text, Input, Button, Slider, Title } from '@mantine/core';
 
 
 import { v4 as uuid } from 'uuid';
@@ -62,6 +62,7 @@ const Todo = () => {
   return (
     <>
       <Container>
+
         <Space h="md" />
         <header data-testid="todo-header">
           <Header className={classes.header}>
@@ -69,15 +70,15 @@ const Todo = () => {
           </Header>
         </header>
         <Space h="md" />
+        
         {/* leave the form code inside of the Todo Component */}
-        <SimpleGrid cols={2} spacing="sm" verticalSpacing="lg">
-          <div>
-            <Paper padding="lg" radius="sm" withBorder p="md">
+        <Grid cols={2} spacing="sm" verticalSpacing="lg">
 
+          <Grid.Col span={4}>
+            <Paper padding="lg" radius="sm" withBorder p="md">
               <form onSubmit={handleSubmit}>
                 <Stack >
                   <Title order={3}>Add To Do Item</Title>
-
                   <label>
                     <Text fz="sm" fw={500}>To Do Item</Text>
                     <Input size="sm" onChange={handleChange} name="text" type="text" placeholder="Item Details" />
@@ -96,18 +97,20 @@ const Todo = () => {
                   <label>
                     <Button size="sm" type="submit">Add Item</Button>
                   </label>
+
                 </Stack>
               </form>
             </Paper>
-          </div>
-          <div>
-            <List list={list} toggleComplete={toggleComplete} />
-          </div>
-        </SimpleGrid>
+          </Grid.Col>
+
+          <Grid.Col span="auto">
+            <List list={list} toggleComplete={toggleComplete} deleteItem={deleteItem} />
+          </Grid.Col>
+
+        </Grid>
       </Container>
     </>
   );
 };
 
 export default Todo;
-g
