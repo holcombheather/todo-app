@@ -1,13 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { SettingsContext } from '../../Context/Settings';
-import useForm from '../../hooks/form';
-import { Header, SimpleGrid, createStyles, Group, Container, Space, Stack, Paper, Text, Input, Button, Title, Switch, NumberInput } from '@mantine/core';
-// import { IconSettings } from '@tabler/icons-react';
-
-
-import { v4 as uuid } from 'uuid';
-
-
+import { Header, SimpleGrid, createStyles, Group, Container, Space, Stack, Paper, Text, TextInput,  Button, Title, Switch, NumberInput } from '@mantine/core';
+import { IconSettings } from '@tabler/icons-react';
+import { When } from 'react-if';
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -17,18 +12,28 @@ const useStyles = createStyles((theme) => ({
   }
 }));
 
-const SettingsForm = () => {
+function SettingsForm() {
   const { classes } = useStyles();
-  const { itemsPerScreen, setItemsPerScreen, hideCompleted, setHideCompleted, sortBy, setSortBy } = useContext(SettingsContext);
+  const [show, setShow] = useState(false);
+  const { 
+    itemsPerScreen, 
+    setItemsPerScreen, 
+    hideCompleted, 
+    setHideCompleted, 
+    sortBy, 
+    setSortBy, 
+    saveLocally, 
+  } = useContext(SettingsContext);
 
-  const [defaultValues] = useState({
-    difficulty: 4,
-  });
-  const { handleChange, handleSubmit } = useForm(defaultValues);
+  console.log('sortBy:', {sortBy}, {hideCompleted}, {itemsPerScreen});
+  
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    saveLocally();
+    setShow(true);
+    event.target.reset();
 
-
-
-  const [checked, setChecked] = useState(false);
+  }
 
   return (
     <>
@@ -36,24 +41,24 @@ const SettingsForm = () => {
         <Space h="md" />
         <header data-testid="todo-header">
           <Header className={classes.header}>
-            <Title order={4} data-testid="todo-h1">Manage Settings</Title>
+            <Title order={3} data-testid="todo-h1"><IconSettings /> Manage Settings</Title>
           </Header>
         </header>
         <Space h="md" />
+        
         <SimpleGrid cols={2} spacing="lg" verticalSpacing="lg">
+          
           <div>
             <Paper padding="lg" radius="sm" withBorder p="md">
+              <form onSubmit={handleSubmit}>
 
-              <form 
-              onSubmit={handleSubmit}
-               >
                 <Stack spacing="xs">
                   <Title order={4}>Update Settings</Title>
 
                   <Group>
                     <Switch
-                    // TODO: update state
-                    checked={checked} onChange={(event) => setChecked(event.currentTarget.checked)} 
+                      checked={hideCompleted} 
+                      onChange={(event) => setHideCompleted(event.currentTarget.checked)}
                     />
                     <Text fz="sm" >Show Completed ToDos</Text>
                   </Group>
@@ -61,49 +66,46 @@ const SettingsForm = () => {
                   <label>
                     <Text fz="sm" fw={500}>Items Per Page</Text>
                     <NumberInput size="sm" 
-                    // onChange={value => setItemsPerScreen(value)} 
-                    name="itemsPerScreen" placeholder="20" />
+                      value={itemsPerScreen}
+                      onChange={setItemsPerScreen} 
+                    />
                   </label>
 
                   <label>
                     <Text fz="sm" fw={500}>Sort Keyword</Text>
-                    <Input size="sm" 
-                    // onChange={handleChange} 
-                    name="assignee" type="text" placeholder="difficulty"
-                    // TODO: update state
-                    // TODO: counter
+                    <TextInput 
+                      size="sm" 
+                      onChange={(e) => setSortBy(e.currentTarget.value)}
+                      type="text"
+                      placeholder={sortBy}
                     />
                   </label>
 
                   <label>
                     <Button size="sm" type="submit">Show New Settings</Button>
                   </label>
+
+
                 </Stack>
               </form>
             </Paper>
           </div>
+
+          {/* // ! RESULTS  */}
           <div>
+            <When condition={show}>
             <Paper padding="lg" radius="sm" withBorder p="lg">
                 <Stack spacing="xs">
                   <Title order={4}>Updated Settings</Title>
                   <Space h="xs" />
-                  <Text fz="md" >
-                    {/* {hideCompleted ? 'Show Completed ToDos' : 'Hide Completed ToDos'} */}
-                    </Text>
 
-                  <Text fz="md" >Items Per Page: 
-                  {/* {itemsPerScreen} */}
-                  </Text>
-
-
-                  <label>
-                    <Text fz="md">Sort Keyword: 
-                    {/* {sortBy} */}
-                    </Text>
-                  </label>
-
+                  <Text fz="md" >{hideCompleted ? 'Show' : 'Hide'} Completed Todos</Text>
+                  <Text fz="md" >Items Per Page: {itemsPerScreen}</Text>
+                  <Text fz="md">Sort Keyword: {sortBy}</Text>
+                  
                 </Stack>
             </Paper>
+            </When>
           </div>
         </SimpleGrid>
       </Container>

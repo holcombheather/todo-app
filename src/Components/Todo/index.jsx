@@ -62,6 +62,7 @@ const Todo = () => {
   return (
     <>
       <Container>
+
         <Space h="md" />
         <header data-testid="todo-header">
           <Header className={classes.header}>
@@ -69,15 +70,15 @@ const Todo = () => {
           </Header>
         </header>
         <Space h="md" />
+        
         {/* leave the form code inside of the Todo Component */}
         <Grid cols={2} spacing="sm" verticalSpacing="lg">
-          <div>
-            <Paper padding="lg" radius="sm" withBorder p="md">
 
+          <Grid.Col span={4}>
+            <Paper padding="lg" radius="sm" withBorder p="md">
               <form onSubmit={handleSubmit}>
                 <Stack >
                   <Title order={3}>Add To Do Item</Title>
-
                   <label>
                     <Text fz="sm" fw={500}>To Do Item</Text>
                     <Input size="sm" onChange={handleChange} name="text" type="text" placeholder="Item Details" />
@@ -96,13 +97,16 @@ const Todo = () => {
                   <label>
                     <Button size="sm" type="submit">Add Item</Button>
                   </label>
+
                 </Stack>
               </form>
             </Paper>
-          </div>
-          <div>
-            <List list={list} toggleComplete={toggleComplete} deleteItem={deleteItem}/>
-          </div>
+          </Grid.Col>
+
+          <Grid.Col span="auto">
+            <List list={list} toggleComplete={toggleComplete} deleteItem={deleteItem} />
+          </Grid.Col>
+
         </Grid>
       </Container>
     </>
