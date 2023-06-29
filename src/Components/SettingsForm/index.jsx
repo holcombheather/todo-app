@@ -2,6 +2,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import { SettingsContext } from '../../Context/Settings';
 import useForm from '../../hooks/form';
 import { Header, SimpleGrid, createStyles, Group, Container, Space, Stack, Paper, Text, Input, Button, Title, Switch, NumberInput } from '@mantine/core';
+// import { IconSettings } from '@tabler/icons-react';
+
 
 import { v4 as uuid } from 'uuid';
 
@@ -17,13 +19,13 @@ const useStyles = createStyles((theme) => ({
 
 const SettingsForm = () => {
   const { classes } = useStyles();
+  const { itemsPerScreen, setItemsPerScreen, hideCompleted, setHideCompleted, sortBy, setSortBy } = useContext(SettingsContext);
 
   const [defaultValues] = useState({
     difficulty: 4,
   });
   const { handleChange, handleSubmit } = useForm(defaultValues);
 
-  const { itemsPerScreen, setItemsPerScreen, hideCompleted, setHideCompleted, sortBy, setSortBy } = useContext(SettingsContext);
 
 
   const [checked, setChecked] = useState(false);

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import useForm from '../../hooks/form';
-import { Header, SimpleGrid, createStyles, Navbar, Container, Space, Stack, Paper, Text, Input, Button, Slider, Title } from '@mantine/core';
+import { Header, Grid, createStyles, Navbar, Container, Space, Stack, Paper, Text, Input, Button, Slider, Title } from '@mantine/core';
 
 
 import { v4 as uuid } from 'uuid';
@@ -70,7 +70,7 @@ const Todo = () => {
         </header>
         <Space h="md" />
         {/* leave the form code inside of the Todo Component */}
-        <SimpleGrid cols={2} spacing="sm" verticalSpacing="lg">
+        <Grid cols={2} spacing="sm" verticalSpacing="lg">
           <div>
             <Paper padding="lg" radius="sm" withBorder p="md">
 
@@ -103,7 +103,7 @@ const Todo = () => {
           <div>
             <List list={list} toggleComplete={toggleComplete} deleteItem={deleteItem}/>
           </div>
-        </SimpleGrid>
+        </Grid>
       </Container>
     </>
   );
