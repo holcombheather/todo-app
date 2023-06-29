@@ -1,18 +1,22 @@
-import React, { useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import { SettingsContext } from '../../Context/Settings';
 import { Container, Group, Pagination, Card, Text, Badge, Space, CloseButton } from '@mantine/core';
 
 
 const List = ({ list, toggleComplete }) => {
-  const { itemsPerScreen, hideCompleted } = useContext(SettingsContext);
+  const { itemsPerScreen, hideCompleted, sort } = useContext(SettingsContext);
   const [currentPage, setCurrentPage] = useState(1);
 
+  console.log(itemsPerScreen, hideCompleted, sort);
+
   const filteredList = hideCompleted ? list.filter(item => !item.complete) : list;
-  const startIndex = (currentPage - 1) * itemsPerScreen;
+   const totalPage = Math.ceil(filteredList.length / itemsPerScreen); 
+   
+   const startIndex = (currentPage - 1) * itemsPerScreen;
   const endIndex = startIndex + itemsPerScreen;
   const displayedList = filteredList.slice(startIndex, endIndex);
 
-  const totalPage = Math.ceil(filteredList.length / itemsPerScreen);
+
   return (
     <>
       <Container px="sm" spacing={10}>
@@ -35,7 +39,7 @@ const List = ({ list, toggleComplete }) => {
           <Space h="md" />
           </>
         ))}
-        <Pagination.Root withEdges value={currentPage} total={totalPage} initialPage={currentPage} onPageChange={setCurrentPage}>
+        <Pagination.Root withEdges value={currentPage} total={totalPage} onChange={setCurrentPage}>
           <Group spacing={10} position="left">
             <Pagination.Previous />
             <Pagination.Items />
