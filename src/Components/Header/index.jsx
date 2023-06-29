@@ -1,5 +1,6 @@
 import React from 'react';
-import { createStyles, Text, Group, Navbar, Button, Flex } from '@mantine/core';
+import { createStyles, Group, Navbar, Button, Flex } from '@mantine/core';
+import { Link } from 'react-router-dom';
 
 const useStyles = createStyles((theme) => ({
   mainHeader: {
@@ -18,8 +19,8 @@ function Header() {
     <header>
         <Navbar className={classes.mainHeader}>
           <Group>
-         <Text>Home</Text>
-          <Text>Settings</Text>
+         <Link to="/" style={{ color: 'inherit', textDecoration: 'none' }}>Home</Link>
+          <Link to="/settings" style={{ color: 'inherit', textDecoration: 'none' }}>Settings</Link>
           <Flex justify="flex-end">
             <Button align="right" color="red">Log Out</Button>  
           </Flex>
