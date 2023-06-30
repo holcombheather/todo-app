@@ -3,11 +3,13 @@ import { SettingsContext } from '../../Context/Settings';
 import { Container, Group, Pagination, Card, Text, Badge, Space, CloseButton, UnstyledButton } from '@mantine/core';
 import Auth from '../Auth/index';
 import { Switch, Case, Default } from 'react-if';
+import { AuthContext } from '../../Context/Auth';
 
 
 
 const List = ({ list, toggleComplete, toggleIncomplete, deleteItem }) => {
   const { itemsPerScreen, hideCompleted, sortBy } = useContext(SettingsContext);
+  const { canUpdate } = useContext(AuthContext);
   const [currentPage, setCurrentPage] = useState(1);
 
   console.log(itemsPerScreen, hideCompleted, sortBy);
@@ -48,21 +50,29 @@ const List = ({ list, toggleComplete, toggleIncomplete, deleteItem }) => {
                 <Group position="apart">
                   <div>
                     <Group>
-                      <Auth capability="update">
                       <Switch>
-                        <Case condition={item.complete} >
+
+                      <Case condition={item.complete} >
+                        {canUpdate() ? (
                           <UnstyledButton>
-                          
-                          <Badge onClick={() => toggleIncomplete(item.id)} color="red" variant="filled" title="Mark Incomplete">Complete</Badge>
+                            <Badge onClick={() => toggleIncomplete(item.id)} color="red" variant="filled" title="Mark Incomplete">Complete</Badge>
                           </UnstyledButton>
-                        </Case>
-                        <Default>
-                          <Badge color="green" variant="filled"
-                          onClick={() => toggleComplete(item.id)}
-                          >Pending</Badge>
-                        </Default>
+                        ) : (
+                          <Badge color="red" variant="filled" title="Mark Incomplete">Complete</Badge>
+                        )}
+                      </Case>
+                      <Default>
+                        {canUpdate() ? (
+                          <UnstyledButton>
+                            <Badge onClick={() => toggleComplete(item.id)} color="green" variant="filled" title="Mark Complete">Pending</Badge>
+                          </UnstyledButton>
+                        ) : (
+                          <Badge color="green" variant="filled" >Pending</Badge>
+                        )}
+                      </Default>
+
+
                       </Switch>
-                      </Auth>
                       <Text fz="md">{item.assignee}</Text>
                     </Group>
                   </div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import testUsers from './lib/users';
 import jwt_decode from 'jwt-decode';
 import { useCookies } from 'react-cookie';
@@ -9,7 +9,16 @@ function AuthProvider({ children }){
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState({});
   const [error, setError] = useState(null);
-  const [cookies, setCookie] = useCookies(['token']);
+
+  const [cookies, setCookie, removeCookie] = useCookies(['token']);
+
+  // TODO: useEffect to load cookie upon page load
+  useEffect(() => {
+    let cookieToken = cookies.token;
+    if (cookieToken) {
+      _validateToken(cookieToken);
+    }
+  }, [cookies]);
 
   const _validateToken = (token) => {
     try {
@@ -49,6 +58,10 @@ function AuthProvider({ children }){
     return user?.capabilities?.includes(capability)
   }
 
+  const canUpdate = () => {
+    return user?.capabilities?.includes("update");
+  }
+
   const values = {
     isLoggedIn,
     user,
@@ -56,6 +69,7 @@ function AuthProvider({ children }){
     login,
     logout,
     authorize,
+    canUpdate,
   }
   return(
     <AuthContext.Provider value={values}>

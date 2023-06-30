@@ -12,7 +12,7 @@ const useStyles = createStyles((theme) => ({
   }
 }));
 
-function LoginComp() {
+function Login() {
   const { classes } = useStyles();
   const { login, logout, isLoggedIn, } = useContext(AuthContext);
   const [username, setUsername] = useState('');
@@ -47,7 +47,7 @@ function LoginComp() {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Password"
             />
-            <Button type="submit" color="dark">Login</Button>
+            <Button type="submit" color="dark" onClick={() => login(username, password)}>Login</Button>
             <Space h="lg" />
           </Group>
         </Default>
@@ -56,6 +56,6 @@ function LoginComp() {
   )
 };
 
-export default LoginComp;
+export default Login;
 
 

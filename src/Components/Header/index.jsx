@@ -1,7 +1,7 @@
 import React from 'react';
 import { createStyles, Group, Space, Navbar, Flex, Grid } from '@mantine/core';
 import { Link } from 'react-router-dom';
-import LoginComp from '../Login/index';
+import Login from '../Login/index';
 
 const useStyles = createStyles((theme) => ({
   mainHeader: {
@@ -28,7 +28,7 @@ function Header() {
           </Grid.Col>
           <Grid.Col span="auto" justify="end">
             <Flex justify="flex-end">
-              <LoginComp />
+              <Login />
             </Flex>
           </Grid.Col>
         </Grid>
