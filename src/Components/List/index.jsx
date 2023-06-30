@@ -1,16 +1,18 @@
 import { useContext, useState } from 'react';
 import { SettingsContext } from '../../Context/Settings';
-import { Container, Group, Pagination, Card, Text, Box, Badge, Space, CloseButton, Flex, SimpleGrid } from '@mantine/core';
+import { Container, Group, Pagination, Card, Text, Badge, Space, CloseButton, UnstyledButton } from '@mantine/core';
+import Auth from '../Auth/index';
+import { Switch, Case, Default } from 'react-if';
 
 
 
-const List = ({ list, toggleComplete, deleteItem }) => {
-  const { itemsPerScreen, hideCompleted, sort } = useContext(SettingsContext);
+const List = ({ list, toggleComplete, toggleIncomplete, deleteItem }) => {
+  const { itemsPerScreen, hideCompleted, sortBy } = useContext(SettingsContext);
   const [currentPage, setCurrentPage] = useState(1);
 
-  console.log(itemsPerScreen, hideCompleted, sort);
+  console.log(itemsPerScreen, hideCompleted, sortBy);
 
-  const filteredList = hideCompleted ? list.filter(item => !item.complete) : list;
+  const filteredList = hideCompleted ? list : list.filter(item => !item.complete);
   const totalPage = Math.ceil(filteredList.length / itemsPerScreen);
 
   const startIndex = (currentPage - 1) * itemsPerScreen;
@@ -29,12 +31,27 @@ const List = ({ list, toggleComplete, deleteItem }) => {
                 <Group position="apart">
                   <div>
                     <Group>
-                      <Badge color="green" variant="filled" onClick={() => toggleComplete(item.id)}>Pending</Badge>
+                      <Auth capability="update">
+                      <Switch>
+                        <Case condition={item.complete} >
+                          <UnstyledButton>
+                          
+                          <Badge onClick={() => toggleIncomplete(item.id)} color="red" variant="filled" title="Mark Incomplete">Complete</Badge>
+                          </UnstyledButton>
+                        </Case>
+                        <Default>
+                          <Badge color="green" variant="filled"
+                          onClick={() => toggleComplete(item.id)}
+                          >Pending</Badge>
+                        </Default>
+                      </Switch>
+                      </Auth>
                       <Text fz="md">{item.assignee}</Text>
                     </Group>
                   </div>
-                  {/* // TODO: Wrap close button in auth */}
-                  <CloseButton onClick={() => deleteItem(item.id)} title="Delete ToDo Item" size="sm" justify="end" />
+                  <Auth capability="delete">
+                    <CloseButton onClick={() => deleteItem(item.id)} title="Delete ToDo Item" size="sm" justify="end" />
+                  </Auth>
                 </Group>
               </Card.Section>
               <Card.Section inheritPadding py="xs">

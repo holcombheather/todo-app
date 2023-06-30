@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import testUsers from './lib/users';
 import jwt_decode from 'jwt-decode';
+import { useCookies } from 'react-cookie';
 
 export const AuthContext = React.createContext();
 
@@ -8,6 +9,7 @@ function AuthProvider({ children }){
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState({});
   const [error, setError] = useState(null);
+  const [cookies, setCookie] = useCookies(['token']);
 
   const _validateToken = (token) => {
     try {
@@ -29,7 +31,8 @@ function AuthProvider({ children }){
     let user = testUsers[username];
     if (user && user.password === password){
       try {
-        _validateToken(user.token)
+        _validateToken(user.token);
+        setCookie('token', user.token, { path: '/' });
       } catch(err){
         setError(err);
         console.log(err);
@@ -42,7 +45,7 @@ function AuthProvider({ children }){
     setIsLoggedIn(false);
   }
 
-  const can = (capability) => {
+  const authorize = (capability) => {
     return user?.capabilities?.includes(capability)
   }
 
@@ -52,7 +55,7 @@ function AuthProvider({ children }){
     error,
     login,
     logout,
-    can,
+    authorize,
   }
   return(
     <AuthContext.Provider value={values}>

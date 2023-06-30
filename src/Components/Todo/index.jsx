@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import useForm from '../../hooks/form';
-import { Header, Grid, createStyles, Navbar, Container, Space, Stack, Paper, Text, Input, Button, Slider, Title, TextInput } from '@mantine/core';
+import { Header, Grid, createStyles, Container, Space, Stack, Paper, Text, Button, Slider, Title, TextInput } from '@mantine/core';
+import Auth from '../Auth/index';
+import { SettingsContext } from '../../Context/Settings';
 
 
 import { v4 as uuid } from 'uuid';
@@ -24,17 +26,30 @@ const Todo = () => {
   const [list, setList] = useState([]);
   const [incomplete, setIncomplete] = useState([]);
   const { handleChange, handleSubmit } = useForm(addItem, defaultValues);
+  const { hideCompleted } = useContext(SettingsContext);
+
+  useEffect(() => {
+    const savedTodos = JSON.parse(localStorage.getItem('todos'));
+    if (savedTodos) {
+      setList(savedTodos);
+    }
+  }, []);
 
   function addItem(item) {
     item.id = uuid();
     item.complete = false;
     console.log(item);
-    setList([...list, item]);
+    const newList = [...list, item];
+    setList(newList);
+
+    localStorage.setItem('todos', JSON.stringify(newList));
   }
 
   function deleteItem(id) {
-    const items = list.filter(item => item.id !== id);
-    setList(items);
+    const newList = list.filter(item => item.id !== id);
+    setList(newList);
+
+    localStorage.setItem('todos', JSON.stringify(newList));
   }
 
   function toggleComplete(id) {
@@ -48,12 +63,34 @@ const Todo = () => {
 
     setList(items);
 
+    localStorage.setItem('list', JSON.stringify(items));
   }
+
+  function toggleIncomplete(id) {
+    const items = list.map(item => {
+      if (item.id === id) {
+        item.complete = false;
+      }
+      return item;
+    });
+
+    setList(items);
+
+    localStorage.setItem('list', JSON.stringify(items));
+}
+
+  useEffect(() => {
+    // Load items from local storage and set the list state
+    const itemsFromStorage = localStorage.getItem('list');
+    if (itemsFromStorage) {
+      setList(JSON.parse(itemsFromStorage));
+    }
+    }, []);
 
   useEffect(() => {
     let incompleteCount = list.filter(item => !item.complete).length;
     setIncomplete(incompleteCount);
-    document.title = `To Do List: ${incomplete}`;
+    document.title = `To Do List: ${incompleteCount}`;
     // linter will want 'incomplete' added to dependency array unnecessarily. 
     // disable code used to avoid linter warning 
     // eslint-disable-next-line react-hooks/exhaustive-deps 
@@ -72,7 +109,7 @@ const Todo = () => {
         
         {/* leave the form code inside of the Todo Component */}
         <Grid cols={2} spacing="sm" verticalSpacing="lg">
-
+        <Auth capability="create">
           <Grid.Col span={4}>
             <Paper padding="lg" radius="sm" withBorder p="md">
               <form onSubmit={handleSubmit}>
@@ -101,9 +138,9 @@ const Todo = () => {
               </form>
             </Paper>
           </Grid.Col>
-
+        </Auth>
           <Grid.Col span="auto">
-            <List list={list} toggleComplete={toggleComplete} deleteItem={deleteItem} />
+            <List list={list} toggleComplete={toggleComplete} toggleIncomplete={toggleIncomplete} deleteItem={deleteItem} hideCompleted={hideCompleted} />
           </Grid.Col>
 
         </Grid>
