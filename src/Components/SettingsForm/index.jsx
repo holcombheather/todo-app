@@ -91,7 +91,6 @@ function SettingsForm() {
             </Paper>
           </div>
 
-          {/* // ! RESULTS  */}
           <div>
             <When condition={show}>
             <Paper padding="lg" radius="sm" withBorder p="lg">
