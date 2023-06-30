@@ -19,7 +19,24 @@ const List = ({ list, toggleComplete, toggleIncomplete, deleteItem }) => {
   const endIndex = startIndex + itemsPerScreen;
   const displayedList = filteredList.slice(startIndex, endIndex);
 
+  // const [displayedList, setDisplayedList] = useState([]);
 
+  // useEffect(() => {
+  //   const filteredList = hideCompleted ? list : list.filter(item => !item.complete);
+  //   filteredList.sort((a, b) => {
+  //     if (sortBy === 'difficulty') {
+  //       return a.difficulty - b.difficulty;
+  //     }
+  //     // Add more sort conditions here if needed
+  //     return 0;
+  //   });
+
+  //   const totalPage = Math.ceil(filteredList.length / itemsPerScreen);
+  //   const startIndex = (currentPage - 1) * itemsPerScreen;
+  //   const endIndex = startIndex + itemsPerScreen;
+
+  //   setDisplayedList(filteredList.slice(startIndex, endIndex));
+  // }, [currentPage, itemsPerScreen, hideCompleted, sortBy, list]);
 
   return (
     <>

@@ -1,10 +1,8 @@
-import { render, fireEvent, within } from '@testing-library/react';
+import { render, fireEvent, within, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import App from '../App';
 import { SettingsProvider } from '../Context/Settings';
-import mockData from '../mock/tasks'; // TODO: create mock data for tasks
 
-const initialMockData = [...mockData];
 const initialSettings = {
   itemsPerScreen: 3,
   hideCompleted: true,
@@ -13,28 +11,29 @@ const initialSettings = {
 
 describe('App integration tests', () => {
 
-  test('Changing itemsPerScreen in SettingsContext affects the List display', () => {
-    const { getByTestId, getByText } = render(
+  test('Changing itemsPerScreen in SettingsContext affects the List display', async () => {
+    const { getByTestId } = render(
       <SettingsProvider>
         <App />
       </SettingsProvider>
     );
 
     // Simulate changing the setting
-
     fireEvent.change(getByTestId('items-per-screen-input'), { target: { value: '5' } });
 
-    // Check the list now shows 5 items
-
-    const items = within(getByTestId('task-list')).getAllByTestId('task-item');
-    expect(items.length).toBe(5);
+    // Wait for the UI to update
+    await waitFor(() => {
+      // Check the list now shows 5 items
+      const items = within(getByTestId('task-list')).getAllByTestId('task-item');
+      expect(items.length).toBe(5);
+    });
   });
 
 
-  test('Hiding completed tasks in SettingsContext hides them from List', () => {
+  test('Hiding completed tasks in SettingsContext hides them from List', async () => {
     const { getByTestId, queryByText } = render(
       <SettingsProvider value={initialSettings}>
-        <App tasks={initialMockData} />
+        <App />
       </SettingsProvider>
     );
 
@@ -46,23 +45,29 @@ describe('App integration tests', () => {
     // Simulate changing the setting to show completed tasks
     fireEvent.click(getByTestId('show-completed-checkbox'));
 
-    // Now the completed task should be visible
-    expect(queryByText('Completed Task')).toBeInTheDocument();
+    // Wait for the UI to update
+    await waitFor(() => {
+      // Now the completed task should be visible
+      expect(queryByText('Completed Task')).toBeInTheDocument();
+    });
   });
 
-  test('Changing sort order in SettingsContext changes order of tasks in List', () => {
+  test('Changing sort order in SettingsContext changes order of tasks in List', async () => {
     const { getByTestId, getAllByTestId } = render(
       <SettingsProvider value={initialSettings}>
-        <App tasks={initialMockData} />
+        <App />
       </SettingsProvider>
     );
 
     // Simulate changing the setting to sort by due date
     fireEvent.change(getByTestId('sort-order-select'), { target: { value: 'dueDate' } });
 
-    // Check the tasks are now ordered by due date
-    const tasks = getAllByTestId('task-item').map(el => el.textContent);
-    const sortedTasks = tasks.slice().sort((a, b) => a.dueDate - b.dueDate);
-    expect(tasks).toEqual(sortedTasks);
+    // Wait for the UI to update
+    await waitFor(() => {
+      // Check the tasks are now ordered by due date
+      const tasks = getAllByTestId('task-item').map(el => el.textContent);
+      const sortedTasks = tasks.slice().sort((a, b) => a.dueDate - b.dueDate);
+      expect(tasks).toEqual(sortedTasks);
+    });
   });
 });

@@ -1,0 +1,40 @@
+const mockData = [
+  {
+    id: "1",
+    text: "Do homework",
+    assignee: "John Doe",
+    difficulty: 3,
+    complete: false
+  },
+  {
+    id: "2",
+    text: "Grocery shopping",
+    assignee: "Jane Doe",
+    difficulty: 2,
+    complete: false
+  },
+  {
+    id: "3",
+    text: "Gym workout",
+    assignee: "John Doe",
+    difficulty: 4,
+    complete: true
+  },
+  {
+    id: "4",
+    text: "Prepare presentation",
+    assignee: "Jane Doe",
+    difficulty: 5,
+    complete: false
+  },
+  {
+    id: "5",
+    text: "Car maintenance",
+    assignee: "John Doe",
+    difficulty: 1,
+    complete: true
+  },
+  // You can add more items as needed
+];
+
+export default mockData;
