@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import useForm from '../../hooks/form';
-import { Header, Grid, createStyles, Navbar, Container, Space, Stack, Paper, Text, Input, Button, Slider, Title } from '@mantine/core';
+import { Header, Grid, createStyles, Navbar, Container, Space, Stack, Paper, Text, Input, Button, Slider, Title, TextInput } from '@mantine/core';
 
 
 import { v4 as uuid } from 'uuid';
@@ -61,8 +61,7 @@ const Todo = () => {
 
   return (
     <>
-      <Container>
-
+      <Container size="lg">
         <Space h="md" />
         <header data-testid="todo-header">
           <Header className={classes.header}>
@@ -81,12 +80,12 @@ const Todo = () => {
                   <Title order={3}>Add To Do Item</Title>
                   <label>
                     <Text fz="sm" fw={500}>To Do Item</Text>
-                    <Input size="sm" onChange={handleChange} name="text" type="text" placeholder="Item Details" />
+                    <TextInput size="sm" onChange={handleChange} name="text" type="text" placeholder="Item Details" />
                   </label>
 
                   <label>
                     <Text fz="sm" fw={500}>Assigned To</Text>
-                    <Input size="sm" onChange={handleChange} name="assignee" type="text" placeholder="Assignee Name" />
+                    <TextInput size="sm" onChange={handleChange} name="assignee" type="text" placeholder="Assignee Name" />
                   </label>
 
                   <label>

@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
 import { SettingsContext } from '../../Context/Settings';
-import { Container, Group, Pagination, Card, Text, Badge, Space, CloseButton } from '@mantine/core';
+import { Container, Group, Pagination, Card, Text, Box, Badge, Space, CloseButton, Flex, SimpleGrid } from '@mantine/core';
 
 
 
@@ -11,34 +11,38 @@ const List = ({ list, toggleComplete, deleteItem }) => {
   console.log(itemsPerScreen, hideCompleted, sort);
 
   const filteredList = hideCompleted ? list.filter(item => !item.complete) : list;
-   const totalPage = Math.ceil(filteredList.length / itemsPerScreen); 
-   
-   const startIndex = (currentPage - 1) * itemsPerScreen;
+  const totalPage = Math.ceil(filteredList.length / itemsPerScreen);
+
+  const startIndex = (currentPage - 1) * itemsPerScreen;
   const endIndex = startIndex + itemsPerScreen;
   const displayedList = filteredList.slice(startIndex, endIndex);
 
-  
+
 
   return (
     <>
       <Container px="sm" spacing={10}>
         {displayedList.map(item => (
           <>
-          <Card key={item.id} padding="lg" radius="sm" withBorder shadow="lg" >
-            <Card.Section withBorder px="xs">
-              <Group padding="sm">
-                <Badge color="green" variant="filled" onClick={() => toggleComplete(item.id)}>Pending</Badge>
-                <Text fz="md">{item.assignee}</Text>
-                <CloseButton onClick={() => deleteItem(item.id)} title="Delete ToDo Item" size="sm"/>
-              </Group>
-
-            </Card.Section>
-            <Card.Section inheritPadding py="xs">
-              <Text fz="md" mt="xs">{item.text}</Text>
-              <Text align="right"><small>Difficulty: {item.difficulty}</small></Text>
-            </Card.Section>
-          </Card>
-          <Space h="md" />
+            <Card key={item.id} padding="lg" radius="sm" withBorder shadow="lg" >
+              <Card.Section withBorder px="xs">
+                <Group position="apart">
+                  <div>
+                    <Group>
+                      <Badge color="green" variant="filled" onClick={() => toggleComplete(item.id)}>Pending</Badge>
+                      <Text fz="md">{item.assignee}</Text>
+                    </Group>
+                  </div>
+                  {/* // TODO: Wrap close button in auth */}
+                  <CloseButton onClick={() => deleteItem(item.id)} title="Delete ToDo Item" size="sm" justify="end" />
+                </Group>
+              </Card.Section>
+              <Card.Section inheritPadding py="xs">
+                <Text fz="md" mt="xs">{item.text}</Text>
+                <Text align="right"><small>Difficulty: {item.difficulty}</small></Text>
+              </Card.Section>
+            </Card>
+            <Space h="md" />
           </>
         ))}
         <Pagination.Root withEdges value={currentPage} total={totalPage} onChange={setCurrentPage}>

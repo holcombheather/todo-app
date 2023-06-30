@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react';
-import { createStyles, Button, TextInput, PasswordInput, Group } from '@mantine/core';
+import { createStyles, Button, TextInput, Space, Group } from '@mantine/core';
 import { AuthContext } from '../../Context/Auth';
 
 const useStyles = createStyles((theme) => ({
@@ -13,12 +13,22 @@ const useStyles = createStyles((theme) => ({
 
 function LoginComp() {
   const { classes } = useStyles();
-  const { setUsername, setPassword } = useContext(AuthContext);
+  const { login, logout, isLoggedIn } = useContext(AuthContext);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  console.log('isLoggedIn', isLoggedIn);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    login(username, password);
+    // addStaff({name, position});
+    e.target.reset();
+  }
 
   return (
     <form 
       className={classes.login} 
-      // onSubmit={handleSubmit}
+      onSubmit={handleSubmit}
     >
       <Group>
 
@@ -27,14 +37,17 @@ function LoginComp() {
           placeholder="Username"
          />
 
-        <PasswordInput 
+        <TextInput
+          type="password" 
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Password"
           />
 
       <Button type="submit" color="dark">Login</Button>
+      <Space h="lg" />
+
       
-      <Button align="right" color="red">Log Out</Button>  
+      <Button align="right" color="red" onClick={logout}>Log Out</Button>  
       </Group>
 
     </form>

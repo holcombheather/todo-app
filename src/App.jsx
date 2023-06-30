@@ -5,26 +5,20 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import SettingsForm from './Components/SettingsForm';
 import Auth from './Components/Auth';
 
+
 function App() {
   return (
     <>
       <BrowserRouter>
         <Header />
-
         <Auth capability="read">
-
-        <p>I can read!</p>
           <Routes>
             <Route path="/" element={<Todo />} />
             <Route path="/settings" element={<SettingsForm />} />
           </Routes>
-
         </Auth>
-                
-                <Footer />
+        <Footer />
       </BrowserRouter>
-
-
     </>
   );
 }

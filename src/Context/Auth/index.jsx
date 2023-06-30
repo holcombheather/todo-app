@@ -14,14 +14,14 @@ function AuthProvider({ children }){
       // if token is valid, then we HAVE a user assigned to the validUser variable
       let validUser = jwt_decode(token);
       console.log('validUser', validUser);
-      if(validUser){
+      if (validUser){
         setUser(validUser);
         setIsLoggedIn(true);
         console.log('I am logged in');
       }
-    }  catch(error){
-        setError(error);
-        console.log(error);
+    }  catch(err){
+        setError(err);
+        console.log(err);
     }
   }
 
@@ -30,9 +30,9 @@ function AuthProvider({ children }){
     if (user && user.password === password){
       try {
         _validateToken(user.token)
-      } catch(error){
-        setError(error);
-        console.log(error);
+      } catch(err){
+        setError(err);
+        console.log(err);
       }
     }
   }
@@ -43,7 +43,7 @@ function AuthProvider({ children }){
   }
 
   const can = (capability) => {
-    return user?.capabilites?.includes(capability)
+    return user?.capabilities?.includes(capability)
   }
 
   const values = {
